@@ -26,20 +26,37 @@ import java.util.List;
 
 public class ScreenLockView extends View {
 
+    /**
+     * 解锁状态
+     */
     enum State{
-
+        /**
+         * 普通情况
+         */
         STATE_NORMAL,
+        /**
+         * 连线解锁中
+         */
         STATE_SELECTING,
+        /**
+         * 解锁成功
+         */
         STATE_RIGHT,
+        /**
+         * 解锁失败
+         */
         STATE_WRONG;
     }
 
+    /**
+     * 九宫格节点类
+     */
     class Node{
         float x,y;//圆点坐标
-        float radius;
-        private boolean isSelected = false;
-        private int tag = -1;
-        private State mState = State.STATE_NORMAL;
+        float radius;//半径
+        private boolean isSelected = false;//当前节点是否被选中
+        private int tag = -1;//节点值，用来做为密码
+        private State mState = State.STATE_NORMAL;//状态，在重绘时用来确定节点的颜色
 
 
         public Node(int tag,float radius){
@@ -76,26 +93,28 @@ public class ScreenLockView extends View {
         }
     }
 
-    private boolean isSelecting = false;
-    private boolean isChecking = false;
 
+    private boolean isSelecting = false;//是否在连线解锁中
+    private boolean isChecking = false;//是否正在检查密码，正在检查密码的时，用户无法重新连线
+
+    //表示不同状态的颜色
     private int mColor_Normal = Color.GRAY;
     private int mColor_Select = Color.YELLOW;
     private int mColor_Right = Color.GREEN;
     private int mColor_Wrong = Color.RED;
 
-    private int mWidth,mHeight;
-    private List<Node> mNodeList;
-    private List<Node> mSelectNodeList;
+    private int mWidth,mHeight;//宽高
+    private List<Node> mNodeList;//所有节点集合
+    private List<Node> mSelectNodeList;//已选节点的集合
 
     private Paint mNodePaint,mPathPaint;
     private Canvas mNodeCanvas;
     private Bitmap mNodeBitmap;
-    private Path mPath,mTmpPath;
+    private Path mPath,mTmpPath;//mTmpPath主要负责绘制节点与节点之间的Path，mPath负责绘制完整Path，包含手指移动时的Path
     private float mPathStartX,mPathStartY;
-    private float mRadius=18;
+    private float mRadius=18;//节点半径
     private float mRoundPadding = 20;
-    private float mRadiusRate = 2f;
+    private float mRadiusRate = 2f;//比例，用来指定节点有效范围及选中动画最大值
 
 
     public ScreenLockView(Context context) {
@@ -124,6 +143,7 @@ public class ScreenLockView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    //模拟密码检测结束，恢复状态
     private Handler mHanlder = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -159,11 +179,12 @@ public class ScreenLockView extends View {
         mPath = new Path();
         mTmpPath = new Path();
         float radius = /*mWidth/10;*/mRadius;
-        float heightSpace = (mHeight-mRoundPadding*2-mRadius*2*3)/2;
-        float widthSpace  = (mWidth-mRoundPadding*2-mRadius*2*3)/2;
+        float heightSpace = (mHeight-mRoundPadding*2-mRadius*2*3)/2;//垂直方向节点间距
+        float widthSpace  = (mWidth-mRoundPadding*2-mRadius*2*3)/2;//水平方向节点间距
         mNodeList.clear();
         mSelectNodeList.clear();
-        int count = 1;
+        int count = 1;//节点的tag值
+        //创建所有节点对象
         for (int j = 1;j<=3;j++){
             for(int i = 1;i<=3;i++){
                 Node  node = new Node(count,radius);
@@ -193,6 +214,11 @@ public class ScreenLockView extends View {
         }
     }
 
+    /**
+     * 返回指定状态对应的颜色
+     * @param state
+     * @return
+     */
     private int getColor(State state) {
         switch (state){
             case STATE_NORMAL:
@@ -219,7 +245,7 @@ public class ScreenLockView extends View {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 reset();
-                if(node!=null){
+                if(node!=null){//node不为空，标识手指是在节点范围内
                     isSelecting = true;
                     node.setState(State.STATE_SELECTING);
                     mPathStartX = node.x;
@@ -270,11 +296,21 @@ public class ScreenLockView extends View {
         return true;
     }
 
+    /**
+     * 添加选中节点，并调用动画
+     * @param node
+     */
     private void addSelectNode(Node node) {
         mSelectNodeList.add(node);
         startNodeAninator(node);
     }
 
+    /**
+     * 判断当前手指所在位置，同上一个节点之间是否存在另一个节点，如果有
+     * @param x
+     * @param y
+     * @return
+     */
     private Node getMidNode(float x, float y) {
         float targetx = mPathStartX+(x-mPathStartX)/2;
         float targety = mPathStartY+ (y-mPathStartY)/2;
@@ -294,6 +330,9 @@ public class ScreenLockView extends View {
         }
     }
 
+    /**
+     * 恢复所有节点初始状态
+     */
     private void initAllNodeState(){
         for (Node node:mNodeList
              ) {
@@ -301,6 +340,12 @@ public class ScreenLockView extends View {
         }
     }
 
+    /**
+     * 循环遍历节点集合，找到节点圆心和当前坐标点的距离小于指定距离（radius*mRadiusRate）的节点
+     * @param x
+     * @param y
+     * @return
+     */
     private Node getNode(float x,float y){
         for (int i = 0;i<mNodeList.size();i++){
             Node node = mNodeList.get(i);
@@ -311,6 +356,12 @@ public class ScreenLockView extends View {
         return null;
     }
 
+    /**
+     * 找出坐标所在范围内，并且不再选中节点集合中的节点
+     * @param x
+     * @param y
+     * @return
+     */
     private Node getFreeNode(float x,float y){
         Node node = getNode(x,y);
         if(mSelectNodeList.size()==0||!mSelectNodeList.contains(node)){
@@ -319,6 +370,9 @@ public class ScreenLockView extends View {
         return null;
     }
 
+    /**
+     * 初始化
+     */
     private void reset(){
         mPath.reset();
         mTmpPath.reset();
@@ -330,7 +384,9 @@ public class ScreenLockView extends View {
         mPathPaint.setColor(mColor_Select);
 
     }
+
     private String testPwd = "123456";
+    //检查密码
     private boolean checkPwd(){
         if(mSelectNodeList.size()>0){
             StringBuilder sb = new StringBuilder();
@@ -354,6 +410,10 @@ public class ScreenLockView extends View {
         return false;
     }
 
+    /**
+     * 节点选中时的放大动画
+     * @param node
+     */
     private void startNodeAninator(final Node node){
         if(node!=null){
             float src = node.radius;
