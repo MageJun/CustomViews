@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-   <!--<com.example.lw.customviews.views.ScreenLockView
+   <com.example.lw.customviews.views.ScreenLockView
        android:layout_width="0dp"
        android:layout_height="wrap_content"
        app:layout_constraintLeft_toLeftOf="parent"
@@ -16,7 +16,6 @@
        android:layout_marginLeft="30dp"
        android:layout_marginRight="30dp"
        />
--->
    <!--<com.example.lw.customviews.views.RecordWaveView
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
@@ -29,7 +28,7 @@
        android:layout_marginBottom="100dp"
        android:layout_marginTop="100dp"/>-->
 
-   <com.example.lw.customviews.views.RecordGroupView
+   <!--<com.example.lw.customviews.views.RecordGroupView
        android:layout_width="0dp"
        android:layout_height="wrap_content"
        app:layout_constraintLeft_toLeftOf="parent"
@@ -37,6 +36,6 @@
        app:layout_constraintBottom_toBottomOf="parent"
        android:layout_marginLeft="10dp"
        android:layout_marginRight="10dp"
-       android:layout_marginTop="100dp"/>
+       android:layout_marginTop="100dp"/>-->
 
 </android.support.constraint.ConstraintLayout>
