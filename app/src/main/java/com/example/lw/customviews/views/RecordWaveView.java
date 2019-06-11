@@ -23,7 +23,7 @@ public class RecordWaveView extends View {
         mPaint.setAntiAlias(true);
         mPaint.setColor(COLOR);
     }
-    private static final int COLOR = 0xFF1E90FF;
+    private static final int COLOR = /*0xFF1E90FF*/0xFF49B1E9;
 
     public RecordWaveView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
