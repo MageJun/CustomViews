@@ -46,9 +46,14 @@
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintLeft_toLeftOf="parent"
        app:layout_constraintRight_toRightOf="parent"
-       android:padding="20dp"
+       android:layout_marginTop="20dp"
+       android:paddingTop="4dp"
+       android:paddingBottom="4dp"
+       android:paddingLeft="8dp"
+       android:paddingRight="8dp"
        android:text="点我试试啊"
        app:state="state1"
+       android:background="@drawable/bg_text_selecotor"
        android:textColor="@color/color_text"/>
 
 </android.support.constraint.ConstraintLayout>
