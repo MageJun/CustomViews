@@ -56,4 +56,15 @@
        android:background="@drawable/bg_text_selecotor"
        android:textColor="@color/color_text"/>
 
+   <com.example.lw.customviews.views.LoadingTextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@id/titleView"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintRight_toRightOf="parent"
+       android:layout_marginTop="20dp"
+       app:text="Demo"
+       app:colorNormal="@color/colorAccent"
+       app:colorLoading="@color/colorPrimary"/>
+
 </android.support.constraint.ConstraintLayout>

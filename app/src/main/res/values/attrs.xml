@@ -10,4 +10,10 @@
         <enum name="state3" value="2"/>
     </attr>
     </declare-styleable>
+
+    <declare-styleable name="LoadingTextView">
+        <attr name="text" format="string"/>
+        <attr name="colorNormal" format="color"/>
+        <attr name="colorLoading" format="color"/>
+    </declare-styleable>
 </resources>
