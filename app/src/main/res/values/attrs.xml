@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MulitStateTextView">
+    <attr name="stateChecked1" format="boolean"/>
+    <attr name="stateChecked2" format="boolean"/>
+    <attr name="stateChecked3" format="boolean"/>
+    <attr name="state" format="enum">
+        <enum name="state1" value="0"/>
+        <enum name="state2" value="1"/>
+        <enum name="state3" value="2"/>
+    </attr>
+    </declare-styleable>
+</resources>
