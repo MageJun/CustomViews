@@ -15,5 +15,11 @@
         <attr name="text" format="string"/>
         <attr name="colorNormal" format="color"/>
         <attr name="colorLoading" format="color"/>
+        <attr name="orientation" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="top" value="1"/>
+            <enum name="right" value="2"/>
+            <enum name="bottom" value="3"/>
+        </attr>
     </declare-styleable>
 </resources>
