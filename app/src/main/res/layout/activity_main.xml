@@ -56,4 +56,29 @@
        android:background="@drawable/bg_text_selecotor"
        android:textColor="@color/color_text"/>
 
+   <com.example.lw.customviews.views.LoadingTextView
+       android:id="@+id/loadingTextView"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@id/titleView"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintRight_toRightOf="parent"
+       android:layout_marginTop="20dp"
+       app:text="Demo"
+       app:colorNormal="@color/colorAccent"
+       app:colorLoading="@color/colorPrimary"
+       android:padding="10dp"
+       app:orientation="bottom"
+       android:background="#cbcbcb"/>
+
+   <com.example.lw.customviews.views.WaveView
+       android:layout_width="200dp"
+       android:layout_height="300dp"
+       app:layout_constraintTop_toBottomOf="@id/loadingTextView"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintRight_toRightOf="parent"
+       android:layout_marginTop="20dp"
+       android:background="#cbcbcb"
+       />
+
 </android.support.constraint.ConstraintLayout>
